@@ -1,0 +1,87 @@
+-- Create table
+create table ISIN_SECUR
+(
+  id            NUMBER generated always as identity,
+  isin          VARCHAR2(30) not null,
+  nominal       NUMBER(10),
+  auk_proc      NUMBER,
+  pgs_date      DATE,
+  razm_date     DATE,
+  cptype        VARCHAR2(255),
+  cpdescr       VARCHAR2(255),
+  pay_period    NUMBER(10),
+  currency_code VARCHAR2(3),
+  emit_okpo     VARCHAR2(255),
+  emit_name     VARCHAR2(255),
+  cptype_nkcpfr VARCHAR2(255),
+  cpcode_cfi    VARCHAR2(255),
+  total_bonds   NUMBER(10)
+)
+tablespace TEST_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table ISIN_SECUR
+  is 'ISIN ЦБ';
+-- Add comments to the columns 
+comment on column ISIN_SECUR.id
+  is 'ID';
+comment on column ISIN_SECUR.isin
+  is 'ISIN';
+comment on column ISIN_SECUR.nominal
+  is 'Номинал';
+comment on column ISIN_SECUR.auk_proc
+  is '% ставка';
+comment on column ISIN_SECUR.pgs_date
+  is 'Дата погашения';
+comment on column ISIN_SECUR.razm_date
+  is 'Дата размещения';
+comment on column ISIN_SECUR.cptype
+  is 'Тип ЦБ';
+comment on column ISIN_SECUR.cpdescr
+  is 'Описание';
+comment on column ISIN_SECUR.pay_period
+  is 'Платежный период';
+comment on column ISIN_SECUR.currency_code
+  is 'Код валюты';
+comment on column ISIN_SECUR.emit_okpo
+  is 'ОКПО эммитента';
+comment on column ISIN_SECUR.emit_name
+  is 'Наименование эммитента';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table ISIN_SECUR
+  add constraint ISIN_SECUR_PK primary key (ID)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ISIN_SECUR
+  add constraint ISIN_SECUR_UK unique (ISIN)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );

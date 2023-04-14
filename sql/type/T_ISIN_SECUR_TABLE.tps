@@ -1,0 +1,2 @@
+CREATE OR REPLACE NONEDITIONABLE TYPE T_ISIN_SECUR_TABLE is table of t_isin_secur_row;
+/

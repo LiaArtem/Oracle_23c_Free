@@ -1,0 +1,115 @@
+-- Create table
+create table FAIR_VALUE
+(
+  id              NUMBER generated always as identity,
+  calc_date       DATE not null,
+  isin            VARCHAR2(30) not null,
+  currency_code   VARCHAR2(3) not null,
+  fair_value      NUMBER(38,15),
+  ytm             NUMBER(38,15),
+  clean_rate      NUMBER(38,15),
+  cor_coef        NUMBER(38,15),
+  maturity        DATE,
+  cor_coef_cash   NUMBER(38,15),
+  notional        NUMBER(38,15),
+  avr_rate        NUMBER(38,15),
+  option_value    NUMBER(38,15),
+  intrinsic_value NUMBER(38,15),
+  time_value      NUMBER(38,15),
+  delta_per       NUMBER(38,15),
+  delta_equ       NUMBER(38,15),
+  dop             VARCHAR2(255)
+)
+tablespace TEST_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table FAIR_VALUE
+  is 'Справедлива вартість ОВДП та коригуючі коефіцієнти';
+-- Add comments to the columns 
+comment on column FAIR_VALUE.id
+  is 'ID';
+comment on column FAIR_VALUE.calc_date
+  is 'Дата, на яку розрахована справедлива вартість';
+comment on column FAIR_VALUE.isin
+  is 'ISIN';
+comment on column FAIR_VALUE.currency_code
+  is 'Валюта номіналу цінного папера';
+comment on column FAIR_VALUE.fair_value
+  is 'Справедлива вартість одного цінного папера з урахуванням накопиченого купонного доходу, у валюті номіналу';
+comment on column FAIR_VALUE.ytm
+  is 'Дохідність до погашення, %';
+comment on column FAIR_VALUE.clean_rate
+  is 'Курс цінного папера без урахування накопиченого купонного доходу, %';
+comment on column FAIR_VALUE.cor_coef
+  is 'Коригуючий коефіцієнт';
+comment on column FAIR_VALUE.maturity
+  is 'Дата погашення';
+comment on column FAIR_VALUE.cor_coef_cash
+  is 'Коригуючий коефіцієнт для операцій з передавання запасів готівки на зберігання до уповноважених банків';
+comment on column FAIR_VALUE.notional
+  is 'Умовна сума, доларів США';
+comment on column FAIR_VALUE.avr_rate
+  is 'Середньозважений курс на дату оцінки (S), грн. за дол. США';
+comment on column FAIR_VALUE.option_value
+  is 'Розрахункова справедлива вартість деривативу option call, грн.';
+comment on column FAIR_VALUE.intrinsic_value
+  is 'у т.ч. внутрішня вартість, грн.';
+comment on column FAIR_VALUE.time_value
+  is 'у т.ч. часова вартість, грн. ';
+comment on column FAIR_VALUE.delta_per
+  is 'Дельта опціону (delta)';
+comment on column FAIR_VALUE.delta_equ
+  is 'Чистий еквівалент дельти, дол. США';
+comment on column FAIR_VALUE.dop
+  is 'Опис';
+-- Create/Recreate indexes 
+create index FAIR_VALUE_INDEX_ISIN on FAIR_VALUE (ISIN)
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table FAIR_VALUE
+  add constraint FAIR_VALUE_PK primary key (ID)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table FAIR_VALUE
+  add constraint FAIR_VALUE_INDEX_UK unique (CALC_DATE, ISIN, CURRENCY_CODE)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );

@@ -1,0 +1,98 @@
+-- Create table
+create table AUDIT_DDL_CHANGE
+(
+  id          NUMBER(10) not null,
+  object_name VARCHAR2(255),
+  object_type VARCHAR2(255),
+  osuser      VARCHAR2(255),
+  ddl_time    DATE,
+  action      VARCHAR2(255),
+  osmachine   VARCHAR2(4000 CHAR),
+  prev_text   CLOB,
+  text        CLOB
+)
+tablespace TEST_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table AUDIT_DDL_CHANGE
+  is 'Аудит изменения объектов на тестовой базе';
+-- Add comments to the columns 
+comment on column AUDIT_DDL_CHANGE.id
+  is 'ID';
+comment on column AUDIT_DDL_CHANGE.object_name
+  is 'Наименование объекта';
+comment on column AUDIT_DDL_CHANGE.object_type
+  is 'Тип объекта';
+comment on column AUDIT_DDL_CHANGE.osuser
+  is 'Пользователь ОС';
+comment on column AUDIT_DDL_CHANGE.ddl_time
+  is 'Дата изменения';
+comment on column AUDIT_DDL_CHANGE.action
+  is 'Событие';
+comment on column AUDIT_DDL_CHANGE.osmachine
+  is 'Имя ПК';
+comment on column AUDIT_DDL_CHANGE.prev_text
+  is 'Предыдущий текст объекта';
+comment on column AUDIT_DDL_CHANGE.text
+  is 'Измененный текст объекта';
+-- Create/Recreate indexes 
+create index I_AUDIT_DDL_CHANGE_DT on AUDIT_DDL_CHANGE (DDL_TIME)
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+create index I_AUDIT_DDL_CHANGE_OBJ on AUDIT_DDL_CHANGE (OBJECT_NAME)
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+create index I_AUDIT_DDL_CHANGE_OBJT on AUDIT_DDL_CHANGE (OBJECT_TYPE)
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table AUDIT_DDL_CHANGE
+  add constraint PK_AUDIT_DDL_CHANGE primary key (ID)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );

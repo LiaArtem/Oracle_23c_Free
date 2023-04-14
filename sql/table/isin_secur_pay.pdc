@@ -1,0 +1,79 @@
+-- Create table
+create table ISIN_SECUR_PAY
+(
+  id            NUMBER generated always as identity,
+  isin_secur_id NUMBER not null,
+  pay_date      DATE,
+  pay_type      NUMBER(10),
+  pay_val       NUMBER
+)
+tablespace TEST_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table ISIN_SECUR_PAY
+  is 'ISIN ЦБ - купонные периоды';
+-- Add comments to the columns 
+comment on column ISIN_SECUR_PAY.id
+  is 'ID';
+comment on column ISIN_SECUR_PAY.isin_secur_id
+  is 'ISIN_SECUR.ID';
+comment on column ISIN_SECUR_PAY.pay_date
+  is 'Дата выплаты';
+comment on column ISIN_SECUR_PAY.pay_type
+  is 'Тип выплаты';
+comment on column ISIN_SECUR_PAY.pay_val
+  is 'Сумма выплаты на 1 ЦБ';
+-- Create/Recreate indexes 
+create index ISIN_SECUR_PAY_IND on ISIN_SECUR_PAY (ISIN_SECUR_ID)
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table ISIN_SECUR_PAY
+  add constraint ISIN_SECUR_PAY_PK primary key (ID)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ISIN_SECUR_PAY
+  add constraint ISIN_SECUR_PAY_UK unique (PAY_DATE, PAY_TYPE, ISIN_SECUR_ID)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table ISIN_SECUR_PAY
+  add constraint ISIN_SECUR_PAY_FK foreign key (ISIN_SECUR_ID)
+  references ISIN_SECUR (ID) on delete cascade;

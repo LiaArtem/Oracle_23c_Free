@@ -1,0 +1,62 @@
+-- Create table
+create table IMPORT_DATA_TYPE
+(
+  id            NUMBER generated always as identity,
+  type_oper     VARCHAR2(255) not null,
+  data_type     VARCHAR2(4) not null,
+  data_clob     CLOB,
+  data_xml      SYS.XMLTYPE,
+  data_json     JSON,
+  data_json_old CLOB
+)
+tablespace TEST_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table IMPORT_DATA_TYPE
+  is 'Таблица с принятыми данными';
+-- Add comments to the columns 
+comment on column IMPORT_DATA_TYPE.id
+  is 'ID';
+comment on column IMPORT_DATA_TYPE.type_oper
+  is 'Тип операции';
+comment on column IMPORT_DATA_TYPE.data_type
+  is 'Тип данных';
+comment on column IMPORT_DATA_TYPE.data_clob
+  is 'Данные CLOB';
+comment on column IMPORT_DATA_TYPE.data_xml
+  is 'Данные XML';
+comment on column IMPORT_DATA_TYPE.data_json
+  is 'Данные JSON';
+comment on column IMPORT_DATA_TYPE.data_json_old
+  is 'Данные JSON old';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table IMPORT_DATA_TYPE
+  add constraint IMPORT_DATA_TYPE_PK primary key (ID)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate check constraints 
+alter table IMPORT_DATA_TYPE
+  add constraint IMPORT_DATA_TYPE_CHK
+  check (DATA_TYPE in ('xml','json','csv'));
+alter table IMPORT_DATA_TYPE
+  add constraint IMPORT_DATA_TYPE_CHK_JSON
+  check (DATA_JSON_OLD IS JSON);

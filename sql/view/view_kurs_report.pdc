@@ -1,0 +1,35 @@
+create or replace view view_kurs_report 
+as
+with curs_avg_year(part_date_year, currency_code, avg_rate)
+as (
+     select to_char(k.kurs_date, 'YYYY') as part_date_year,
+            k.currency_code,
+            avg(k.rate) as avg_rate
+       from kurs k
+      group by part_date_year, k.currency_code
+    ),
+curs_avg(part_day_month, currency_code, avg_rate)
+as (
+     select f.part_day_month,
+            f.currency_code,
+            avg(f.avg_rate) as avg_rate
+       from ( select to_char(k.kurs_date, 'MM-DD') as part_day_month,
+                k.currency_code,
+                k.rate / y.avg_rate * 100 as avg_rate
+               from kurs k,
+                    curs_avg_year y
+               where y.part_date_year = to_char(k.kurs_date, 'YYYY') and
+                     y.currency_code = k.currency_code
+            ) f
+      group by f.part_day_month, f.currency_code
+    )
+ select k.kurs_date,
+        k.currency_code,
+        k.rate,
+        a.avg_rate
+   from kurs k,
+        curs_avg a
+   where a.part_day_month = to_char(k.kurs_date, 'MM-DD') and
+         a.currency_code = k.currency_code and
+         to_char(k.kurs_date, 'YYYY') in ( select to_char(max(kk.kurs_date), 'YYYY') from kurs kk)
+  order by k.kurs_date;

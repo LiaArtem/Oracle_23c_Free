@@ -1,0 +1,2 @@
+CREATE OR REPLACE NONEDITIONABLE TYPE T_ERB_MINFIN_TABLE is table of t_erb_minfin_row;
+/

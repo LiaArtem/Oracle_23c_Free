@@ -1,0 +1,74 @@
+-- Create table
+create table CURRENCY
+(
+  id         NUMBER generated always as identity,
+  code       VARCHAR2(3) not null,
+  name       VARCHAR2(50) not null,
+  short_name VARCHAR2(3) not null
+)
+tablespace TEST_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table CURRENCY
+  is 'Коды валют НБУ';
+-- Add comments to the columns 
+comment on column CURRENCY.id
+  is 'ID';
+comment on column CURRENCY.code
+  is 'Код валюты НБУ (980,840)';
+comment on column CURRENCY.name
+  is 'Наименование валюты';
+comment on column CURRENCY.short_name
+  is 'Код валюты НБУ текстовый (UAH,USD)';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table CURRENCY
+  add constraint CURRENCY_PK primary key (ID)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table CURRENCY
+  add constraint CURRENCY_UK1 unique (CODE)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table CURRENCY
+  add constraint CURRENCY_UK2 unique (SHORT_NAME)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );

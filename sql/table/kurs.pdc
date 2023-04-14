@@ -1,0 +1,60 @@
+-- Create table
+create table KURS
+(
+  id            NUMBER(10) not null,
+  kurs_date     DATE not null,
+  currency_code VARCHAR2(3) not null,
+  rate          NUMBER(38,6) not null
+)
+tablespace TEST_DATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the table 
+comment on table KURS
+  is 'Курсы валют';
+-- Add comments to the columns 
+comment on column KURS.id
+  is 'ID';
+comment on column KURS.kurs_date
+  is 'Дата курса';
+comment on column KURS.currency_code
+  is 'Код валюты';
+comment on column KURS.rate
+  is 'Курс';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table KURS
+  add constraint PK_KURS primary key (ID)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+alter table KURS
+  add constraint UK_KURS unique (KURS_DATE, CURRENCY_CODE)
+  using index 
+  tablespace TEST_DATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );

@@ -1,0 +1,2 @@
+-- Create sequence 
+create sequence AUDIT_DDL_CHANGE_SEQ;
