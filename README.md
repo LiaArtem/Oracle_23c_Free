@@ -3,7 +3,7 @@ Oracle Database 23c Free Developer on Docker Desktop integration with WEB-servic
 (pipelined, utl_http, json_*, json data type, xmltable)
 
 ---------------------------------------------------------------------------------
-- Встановлення
+Встановлення
 ---------------------------------------------------------------------------------
 1) Встановлюємо Docker Desktop
    https://www.docker.com/products/docker-desktop/
@@ -13,22 +13,22 @@ Oracle Database 23c Free Developer on Docker Desktop integration with WEB-servic
    - буде розгорнуто базу даних з об'єктами.
 
 3) Встановлюємо Oracle Client
-  - завантажуємо Oracle Instant Client Basic Package - instantclient-basic-windows.x64-21.9.0.0.0dbru.zip або версію вище
+   - завантажуємо Oracle Instant Client Basic Package - instantclient-basic-windows.x64-21.9.0.0.0dbru.zip або версію вище
     - https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html
-  - розпаковуємо в папку c:\oracle\product, якщо її немає, створюємо
+   - розпаковуємо в папку c:\oracle\product, якщо її немає, створюємо
 
-  - Змінні середовища -> Системні змінні
-    -> Path додаємо строку - c:\oracle\product\instantclient_21_9\
-    -> додаємо параметр і значення NLS_LANG = AMERICAN_AMERICA.AL32UTF8
+   - Змінні середовища -> Системні змінні
+     -> Path додаємо строку - c:\oracle\product\instantclient_21_9\
+     -> додаємо параметр і значення NLS_LANG = AMERICAN_AMERICA.AL32UTF8
 
-  - завантажуємо SQL*Plus Package - instantclient-sqlplus-windows.x64-21.9.0.0.0dbru.zip
-  - розпаковуємо в папку c:\oracle\product\
-  - копіюємо файли .\client\tnsnames.ora та .\client\sqlnet.ora в папку c:\oracle\product\instantclient_21_9\network\admin\
-  - перевіряємо:
-    - cmd
-    - sqlplus /nolog
-    - connect TEST_USER/!Aa112233@FREE
-    - exit
+   - завантажуємо SQL*Plus Package - instantclient-sqlplus-windows.x64-21.9.0.0.0dbru.zip
+   - розпаковуємо в папку c:\oracle\product\
+   - копіюємо файли .\client\tnsnames.ora та .\client\sqlnet.ora в папку c:\oracle\product\instantclient_21_9\network\admin\
+   - перевіряємо:
+     - cmd
+     - sqlplus /nolog
+     - connect TEST_USER/!Aa112233@FREE
+     - exit
 
 4) Якщо при роботі помилка - ORA-29024: Certificate validation failure, то термін сертифікатів закінчився, потрібні нові сертификати
 
@@ -56,23 +56,23 @@ Oracle Database 23c Free Developer on Docker Desktop integration with WEB-servic
    - видаляємо повного клієнта, якщо більше не потрібен
 
 -------------------------------------------------- -------------------------------
-- Налаштування та робота з IDE Oracle SQL Developer
+Налаштування та робота з IDE Oracle SQL Developer
 -------------------------------------------------- -------------------------------
-  - налаштовуємо кодування із середовищем Oracle SQL Developer та запуск debug
-    - Tools -> Preferences -> Environment -> Encoding (змінюємо cp1251 на UTF-8).
-  - для Debug:
-    - Compile for Debug -> Debug
-  - для компіляції помилок:
-    - SQL developer -> Recompile Sсhema
-  - експорт об'єктів у SQL developer
-    - приклад у зображенні - Settings Export object SQL developer.jpg
+   - налаштовуємо кодування із середовищем Oracle SQL Developer та запуск debug
+     - Tools -> Preferences -> Environment -> Encoding (змінюємо cp1251 на UTF-8).
+   - для Debug:
+     - Compile for Debug -> Debug
+   - для компіляції помилок:
+     - SQL developer -> Recompile Sсhema
+   - експорт об'єктів у SQL developer
+     - приклад у зображенні - Settings Export object SQL developer.jpg
 
 -------------------------------------------------- -------------------------------
-- Загальні SQL
+Загальні SQL
 -------------------------------------------------- -------------------------------
--- об'єкти користувача
-select * from user_objects;
-- інвалідні об'єкти користувача
-select * from user_objects where status != 'VALID'
-- сесії
-select * from V$SESSION;
+   - об'єкти користувача
+   select * from user_objects;
+   - інвалідні об'єкти користувача
+   select * from user_objects where status != 'VALID'
+   - сесії
+   select * from V$SESSION;
