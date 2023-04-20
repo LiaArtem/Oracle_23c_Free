@@ -1,0 +1,30 @@
+CREATE JSON RELATIONAL DUALITY VIEW IF NOT EXISTS VIEW_ISIN_SECUR_JSON
+AS
+  SELECT JSON {  
+              'id'            : i.id,
+              'isin'          : i.isin WITH NOUPDATE,
+              'nominal'       : i.nominal,
+              'auk_proc'      : i.auk_proc,
+              'pgs_date'      : i.pgs_date,
+              'razm_date'     : i.razm_date,
+              'cptype'        : i.cptype,
+              'cpdescr'       : i.cpdescr,
+              'pay_period'    : i.pay_period,
+              'currency_code' : i.currency_code,
+              'emit_okpo'     : i.emit_okpo,
+              'emit_name'     : i.emit_name,
+              'cptype_nkcpfr' : i.cptype_nkcpfr,
+              'cpcode_cfi'    : i.cpcode_cfi,
+              'total_bonds'   : i.total_bonds,
+              'pay' :
+               [ SELECT JSON {
+                             'pay_id'        : p.id,
+                             'pay_date'      : p.pay_date,
+                             'pay_type'      : p.pay_type,
+                             'pay_val'       : p.pay_val
+                             }
+                  FROM isin_secur_pay p WITH INSERT UPDATE DELETE
+                 WHERE p.isin_secur_id = i.id 
+               ]
+              }              
+    FROM isin_secur i WITH INSERT UPDATE DELETE;

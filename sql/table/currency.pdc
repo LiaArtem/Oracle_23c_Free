@@ -1,5 +1,5 @@
 -- Create table
-create table CURRENCY
+create table IF NOT EXISTS CURRENCY
 (
   id         NUMBER generated always as identity,
   code       VARCHAR2(3) not null,

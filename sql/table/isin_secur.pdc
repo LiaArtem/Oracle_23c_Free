@@ -1,5 +1,5 @@
 -- Create table
-create table ISIN_SECUR
+create table IF NOT EXISTS ISIN_SECUR
 (
   id            NUMBER generated always as identity,
   isin          VARCHAR2(30) not null,

@@ -167,7 +167,7 @@ as
       if p_response_status_code = -100
       then
          raise_application_error(-20000, p_response_status_desc, true);
-      end if;             
+      end if;
 
       --dbms_output.put_line(p_response_body);
 
@@ -264,7 +264,7 @@ as
       if p_response_status_code = -100
       then
          raise_application_error(-20000, p_response_status_desc, true);
-      end if;             
+      end if;
 
        --dbms_output.put_line(p_response_body);
       -- добавить историю
@@ -272,7 +272,7 @@ as
 
        if p_format = 'json'
        then
-          if p_check.is_valid_json(p_response_body) = 'T'
+          if p_check.is_valid_json(p_response_body) = true
           then
               for k in (
                        select t.cpcode,
@@ -371,7 +371,7 @@ as
                end loop;
            end if;
        else
-          if p_check.is_valid_xml(p_response_body) = 'T'
+          if p_check.is_valid_xml(p_response_body) = true
           then
               for k in (
                        select t.cpcode,
@@ -516,7 +516,7 @@ as
       if p_response_status_code = -100
       then
          raise_application_error(-20000, p_response_status_desc, true);
-      end if;             
+      end if;
 
        --dbms_output.put_line(p_response_body);
       -- добавить историю
@@ -524,8 +524,13 @@ as
 
        if p_format = 'json'
        then
-          if p_check.is_valid_json(p_response_body) = 'T'
+          if p_check.is_valid_json(p_response_body) = true
           then
+              if p_check.is_valid_json_schema(p_text => p_response_body, p_type => 'kurs_nbu') = false
+              then
+                 raise_application_error(-20000, 'Нарушена структура схемы JSON', true);                         
+              end if;    
+                                         
               for k in (
                         select lpad(j.r030,3,'0') as r030,
                                j.txt,
@@ -556,7 +561,7 @@ as
                end loop;
            end if;
        else
-          if p_check.is_valid_xml(p_response_body) = 'T'
+          if p_check.is_valid_xml(p_response_body) = true
           then
               for k in (
                         select lpad(j.r030,3,'0') as r030,
@@ -670,7 +675,7 @@ as
       if p_response_status_code = -100
       then
          raise_application_error(-20000, p_response_status_desc, true);
-      end if;             
+      end if;
 
        --dbms_output.put_line(p_request_body);
        --dbms_output.put_line(p_response_body);
@@ -685,7 +690,7 @@ as
           raise_application_error(-20000, p_request_body||chr(13)||chr(10)||json_value(p_response_body,'$.errMsg'), true);
        end if;
 
-      if p_check.is_valid_json(p_response_body) = 'T'
+      if p_check.is_valid_json(p_response_body) = true
       then
           p_type_erb_minfin_row.isSuccess := json_value(p_response_body,'$.isSuccess');
           p_type_erb_minfin_row.num_rows := json_value(p_response_body,'$.rows');
@@ -797,8 +802,8 @@ as
          from table (read_kurs_nbu(p_date => p_date, p_format => 'json', p_currency => p_currency_code)) f
          where not exists (select 1 from CURRENCY cc where cc.code = f.r030);
 
-      insert into KURS(ID, KURS_DATE, CURRENCY_CODE, RATE)
-            select kurs_seq.nextval, f.exchangedate, f.cc, f.rate
+      insert into KURS(ID, KURS_DATE, CURRENCY_CODE, RATE, IS_PRIMARY)
+            select kurs_seq.nextval, f.exchangedate, f.cc, f.rate, decode(f.cc, 'USD', true, false)
             from table (read_kurs_nbu(p_date => p_date, p_format => 'json', p_currency => p_currency_code)) f
             where not exists (select 1 from KURS k where k.kurs_date = f.exchangedate and k.currency_code = f.cc)
             ;

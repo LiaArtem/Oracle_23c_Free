@@ -4,7 +4,8 @@ create table KURS
   id            NUMBER(10) not null,
   kurs_date     DATE not null,
   currency_code VARCHAR2(3) not null,
-  rate          NUMBER(38,6) not null
+  rate          NUMBER(38,6) not null,
+  is_primary    BOOLEAN default false not null
 )
 tablespace TEST_DATA
   pctfree 10
@@ -29,6 +30,8 @@ comment on column KURS.currency_code
   is 'Код валюты';
 comment on column KURS.rate
   is 'Курс';
+comment on column KURS.is_primary
+  is 'Основная валюта';
 -- Create/Recreate primary, unique and foreign key constraints 
 alter table KURS
   add constraint PK_KURS primary key (ID)

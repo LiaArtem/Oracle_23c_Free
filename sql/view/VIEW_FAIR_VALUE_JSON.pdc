@@ -1,0 +1,23 @@
+CREATE JSON RELATIONAL DUALITY VIEW IF NOT EXISTS VIEW_FAIR_VALUE_JSON
+AS
+  SELECT JSON {
+              'id'              : f.id,
+              'calc_date'       : f.calc_date WITH NOUPDATE,
+              'isin'            : f.isin WITH NOUPDATE,
+              'currency_code'   : f.currency_code,
+              'fair_value'      : f.fair_value,
+              'ytm'             : f.ytm,
+              'clean_rate'      : f.clean_rate,
+              'cor_coef'        : f.cor_coef,
+              'maturity'        : f.maturity,
+              'cor_coef_cash'   : f.cor_coef_cash,
+              'notional'        : f.notional,
+              'avr_rate'        : f.avr_rate,
+              'option_value'    : f.option_value,
+              'intrinsic_value' : f.intrinsic_value,
+              'time_value'      : f.time_value,
+              'delta_per'       : f.delta_per,
+              'delta_equ'       : f.delta_equ,
+              'dop'             : f.dop WITH NOCHECK 
+              }              
+    FROM fair_value f WITH INSERT UPDATE DELETE;

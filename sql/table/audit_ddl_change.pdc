@@ -1,5 +1,5 @@
 -- Create table
-create table AUDIT_DDL_CHANGE
+create table IF NOT EXISTS AUDIT_DDL_CHANGE
 (
   id          NUMBER(10) not null,
   object_name VARCHAR2(255),
@@ -45,7 +45,7 @@ comment on column AUDIT_DDL_CHANGE.prev_text
 comment on column AUDIT_DDL_CHANGE.text
   is 'Измененный текст объекта';
 -- Create/Recreate indexes 
-create index I_AUDIT_DDL_CHANGE_DT on AUDIT_DDL_CHANGE (DDL_TIME)
+create index IF NOT EXISTS I_AUDIT_DDL_CHANGE_DT on AUDIT_DDL_CHANGE (DDL_TIME)
   tablespace TEST_DATA
   pctfree 10
   initrans 2
@@ -57,7 +57,7 @@ create index I_AUDIT_DDL_CHANGE_DT on AUDIT_DDL_CHANGE (DDL_TIME)
     minextents 1
     maxextents unlimited
   );
-create index I_AUDIT_DDL_CHANGE_OBJ on AUDIT_DDL_CHANGE (OBJECT_NAME)
+create index IF NOT EXISTS I_AUDIT_DDL_CHANGE_OBJ on AUDIT_DDL_CHANGE (OBJECT_NAME)
   tablespace TEST_DATA
   pctfree 10
   initrans 2
@@ -69,7 +69,7 @@ create index I_AUDIT_DDL_CHANGE_OBJ on AUDIT_DDL_CHANGE (OBJECT_NAME)
     minextents 1
     maxextents unlimited
   );
-create index I_AUDIT_DDL_CHANGE_OBJT on AUDIT_DDL_CHANGE (OBJECT_TYPE)
+create index IF NOT EXISTS I_AUDIT_DDL_CHANGE_OBJT on AUDIT_DDL_CHANGE (OBJECT_TYPE)
   tablespace TEST_DATA
   pctfree 10
   initrans 2

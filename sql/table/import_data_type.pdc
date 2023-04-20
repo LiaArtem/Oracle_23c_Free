@@ -1,5 +1,5 @@
 -- Create table
-create table IMPORT_DATA_TYPE
+create table IF NOT EXISTS IMPORT_DATA_TYPE
 (
   id            NUMBER generated always as identity,
   type_oper     VARCHAR2(255) not null,

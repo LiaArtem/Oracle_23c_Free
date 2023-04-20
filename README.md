@@ -1,6 +1,7 @@
 # Oracle_23c_Free
 Oracle Database 23c Free Developer on Docker Desktop integration with WEB-services (GET,POST - JSON,XML,CSV)
-(pipelined, utl_http, json_*, json data type, xmltable)
+(pipelined, utl_http, json_*, SQL JSON Data Type, xmltable).
+Add JSON Relational Duality, JSON Schema, SQL BOOLEAN Data Type.
 
 ---------------------------------------------------------------------------------
 Встановлення
@@ -55,9 +56,9 @@ Oracle Database 23c Free Developer on Docker Desktop integration with WEB-servic
 
    - видаляємо повного клієнта, якщо більше не потрібен
 
--------------------------------------------------- -------------------------------
+---------------------------------------------------------------------------------
 Налаштування та робота з IDE Oracle SQL Developer
--------------------------------------------------- -------------------------------
+---------------------------------------------------------------------------------
    - налаштовуємо кодування із середовищем Oracle SQL Developer та запуск debug
      - Tools -> Preferences -> Environment -> Encoding (змінюємо cp1251 на UTF-8).
    - для Debug:
@@ -67,9 +68,9 @@ Oracle Database 23c Free Developer on Docker Desktop integration with WEB-servic
    - експорт об'єктів у SQL developer
      - приклад у зображенні - Settings Export object SQL developer.jpg
 
--------------------------------------------------- -------------------------------
+---------------------------------------------------------------------------------
 Загальні SQL
--------------------------------------------------- -------------------------------
+---------------------------------------------------------------------------------
    - об'єкти користувача
    select * from user_objects;
    - інвалідні об'єкти користувача

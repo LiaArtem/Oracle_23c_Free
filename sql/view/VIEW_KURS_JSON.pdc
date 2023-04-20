@@ -1,0 +1,8 @@
+CREATE JSON RELATIONAL DUALITY VIEW IF NOT EXISTS VIEW_KURS_JSON 
+AS
+  SELECT JSON {'ID'            : k.id,
+               'KURS_DATE'     : k.kurs_date WITH NOUPDATE,
+               'CURRENCY_CODE' : k.currency_code WITH NOUPDATE,
+               'RATE'          : k.rate
+              }
+    FROM kurs k WITH INSERT UPDATE DELETE;

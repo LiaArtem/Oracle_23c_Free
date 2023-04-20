@@ -1,2 +1,2 @@
 -- Create sequence 
-create sequence KURS_SEQ;
+create sequence IF NOT EXISTS KURS_SEQ;
