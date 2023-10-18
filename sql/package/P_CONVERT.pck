@@ -56,9 +56,15 @@ as
                        p_char_set_from varchar2 default null) -- преобразования из
     return varchar2;
 
-  -- Прообразование теста в дату и время (формат YYYY-MM-DDThh24:mi:ssZ)
+  -- Преобразование теста в дату и время (формат YYYY-MM-DDThh24:mi:ssZ)
   function get_datetime(p_text varchar2) return date;
 
+  -- Описание (дні)
+  function str_days (p_value integer) return varchar2;
+  
+  -- Описание (місяці)
+  function str_month (p_value integer) return varchar2;
+    
 end;
 /
 CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY P_CONVERT
@@ -1079,7 +1085,7 @@ as
       end if;
   end;
 
-  -- Прообразование теста в дату и время (формат YYYY-MM-DDThh24:mi:ssZ)
+  -- Преобразование теста в дату и время (формат YYYY-MM-DDThh24:mi:ssZ)
   function get_datetime(p_text varchar2) return date
   as
     m_date date;
@@ -1106,6 +1112,79 @@ as
         return to_date(null);
   end;
 
+  -- Описание (дні)
+  function str_days (p_value integer) return varchar2
+  is
+    result     varchar2(255);
+    p_name_day varchar2(255);
+    DayValue   integer;
+    CResult    varchar2(20);
+    l          integer;
+  begin
+    DayValue := Trunc(p_value);
+    CResult := to_char(DayValue);
+    l := length(CResult);
+
+    if ((l>1) and (to_number(substr(CResult,l-1,2))>10) and (to_number(substr(CResult,l-1,2))<20))
+     then
+       p_name_day := ' днів ';
+    elsif to_number(substr(CResult,l,1))=0
+     then
+       p_name_day := ' днів ';
+    elsif to_number(substr(CResult,l,1))=1
+     then
+       p_name_day := ' день ';
+    elsif (to_number(substr(CResult,l,1))=2) or (to_number(substr(CResult,l,1))=3) or (to_number(substr(CResult,l,1))=4)
+     then
+       p_name_day:= ' дні ';
+    else
+       p_name_day := ' днів ';
+    end if;
+
+    Result := p_name_day;
+
+    return (trim(substr(Result, 1, 255)));
+  exception when others
+  then
+    return(Result);
+  end;
+
+  -- Описание (місяці)
+  function str_month (p_value integer) return varchar2
+  is
+    result       varchar2(255);
+    p_name_month varchar2(255);
+    MonthValue   integer;
+    CResult      varchar2(20);
+    l            integer;
+  begin
+    MonthValue := Trunc(p_value);
+    CResult := to_char(MonthValue);
+    l := length(CResult);
+
+    if ((l>1) and (to_number(substr(CResult,l-1,2))>10) and (to_number(substr(CResult,l-1,2))<20))
+     then
+       p_name_month := ' місяців ';
+    elsif to_number(substr(CResult,l,1))=0
+     then
+       p_name_month := ' місяців ';
+    elsif to_number(substr(CResult,l,1))=1
+     then
+       p_name_month := ' місяць ';
+    elsif (to_number(substr(CResult,l,1))=2) or (to_number(substr(CResult,l,1))=3) or (to_number(substr(CResult,l,1))=4)
+     then
+       p_name_month:= ' місяці ';
+    else
+       p_name_month := ' місяців ';
+    end if;
+
+    Result := p_name_month;
+
+    return (trim(substr(Result, 1, 255)));
+  exception when others 
+  then 
+    return(Result);
+  end;
 
 end;
 /
