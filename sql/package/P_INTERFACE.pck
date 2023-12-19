@@ -50,7 +50,7 @@ as
 
 end;
 /
-CREATE OR REPLACE NONEDITIONABLE PACKAGE BODY P_INTERFACE
+create or replace NONEDITIONABLE PACKAGE BODY P_INTERFACE
 as
 
     -- Справедливая стоимость ЦБ (котировки НБУ)
@@ -65,9 +65,6 @@ as
       p_response_body        clob;
       p_response_status_code integer;
       p_response_status_desc varchar2(7000);
-      p_num                  integer := 1;
-      ---------------------------------------
-      p_fair_value_row       t_fair_value_row   := t_fair_value_row('','','','','','','','','','','','','','','','','');
       p_fair_value_table     t_fair_value_table := t_fair_value_table();
     begin
       p_url := 'https://bank.gov.ua/files/Fair_value/'||to_char(p_date,'yyyymm/yyyymmdd')||'_fv.txt';
@@ -127,27 +124,25 @@ as
                     from tt
                     )
            loop
-              p_fair_value_row.calc_date := k.calc_date;
-              p_fair_value_row.cpcode := k.cpcode;
-              p_fair_value_row.ccy := k.ccy;
-              p_fair_value_row.fair_value := k.fair_value;
-              p_fair_value_row.ytm := k.ytm;
-              p_fair_value_row.clean_rate := k.clean_rate;
-              p_fair_value_row.cor_coef := k.cor_coef;
-              p_fair_value_row.maturity := k.maturity;
-              p_fair_value_row.cor_coef_cash := k.cor_coef_cash;
-              p_fair_value_row.notional := k.notional;
-              p_fair_value_row.avr_rate := k.avr_rate;
-              p_fair_value_row.option_value := k.option_value;
-              p_fair_value_row.intrinsic_value := k.intrinsic_value;
-              p_fair_value_row.time_value := k.time_value;
-              p_fair_value_row.delta_per := k.delta_per;
-              p_fair_value_row.delta_equ := k.delta_equ;
-              p_fair_value_row.dop := k.dop;
-              --
               p_fair_value_table.extend;
-              p_fair_value_table(p_num) := p_fair_value_row;
-              p_num := p_num + 1;
+              p_fair_value_table(p_fair_value_table.count) :=
+                 t_fair_value_row(calc_date       => k.calc_date,
+                                  cpcode          => k.cpcode,
+                                  ccy             => k.ccy,
+                                  fair_value      => k.fair_value,
+                                  ytm             => k.ytm,
+                                  clean_rate      => k.clean_rate,
+                                  cor_coef        => k.cor_coef,
+                                  maturity        => k.maturity,
+                                  cor_coef_cash   => k.cor_coef_cash,
+                                  notional        => k.notional,
+                                  avr_rate        => k.avr_rate,
+                                  option_value    => k.option_value,
+                                  intrinsic_value => k.intrinsic_value,
+                                  time_value      => k.time_value,
+                                  delta_per       => k.delta_per,
+                                  delta_equ       => k.delta_equ,
+                                  dop             => k.dop);
            end loop;
        end loop;
 
@@ -167,9 +162,6 @@ as
       p_response_status_code integer;
       p_response_status_desc varchar2(7000);
       p_dop_param            varchar2(5);
-      p_num                  integer := 1;
-      ---------------------------------------
-      p_isin_secur_row       t_isin_secur_row   := t_isin_secur_row('','','','','','','','','','','','','','','','','','');
       p_isin_secur_table     t_isin_secur_table := t_isin_secur_table();
     begin
       if p_format = 'json' then p_dop_param := '?json'; end if;
@@ -239,28 +231,26 @@ as
                loop
                   if k.payments is null
                   then
-                      p_isin_secur_row.cpcode := k.cpcode;
-                      p_isin_secur_row.nominal := k.nominal;
-                      p_isin_secur_row.auk_proc := k.auk_proc;
-                      p_isin_secur_row.pgs_date := k.pgs_date;
-                      p_isin_secur_row.razm_date := k.razm_date;
-                      p_isin_secur_row.cptype := k.cptype;
-                      p_isin_secur_row.cpdescr := k.cpdescr;
-                      p_isin_secur_row.pay_period := k.pay_period;
-                      p_isin_secur_row.val_code := k.val_code;
-                      p_isin_secur_row.emit_okpo := k.emit_okpo;
-                      p_isin_secur_row.emit_name := k.emit_name;
-                      p_isin_secur_row.cptype_nkcpfr := k.cptype_nkcpfr;
-                      p_isin_secur_row.cpcode_cfi := k.cpcode_cfi;
-                      p_isin_secur_row.total_bonds := k.total_bonds;
-                      p_isin_secur_row.pay_date := null;
-                      p_isin_secur_row.pay_type := null;
-                      p_isin_secur_row.pay_val := null;
-                      p_isin_secur_row.pay_array := null;
-                      --
                       p_isin_secur_table.extend;
-                      p_isin_secur_table(p_num) := p_isin_secur_row;
-                      p_num := p_num + 1;
+                      p_isin_secur_table(p_isin_secur_table.count) :=
+                         t_isin_secur_row(cpcode        => k.cpcode,
+                                          nominal       => k.nominal,
+                                          auk_proc      => k.auk_proc,
+                                          pgs_date      => k.pgs_date,
+                                          razm_date     => k.razm_date,
+                                          cptype        => k.cptype,
+                                          cpdescr       => k.cpdescr,
+                                          pay_period    => k.pay_period,
+                                          val_code      => k.val_code,
+                                          emit_okpo     => k.emit_okpo,
+                                          emit_name     => k.emit_name,
+                                          cptype_nkcpfr => k.cptype_nkcpfr,
+                                          cpcode_cfi    => k.cpcode_cfi,
+                                          total_bonds   => k.total_bonds,
+                                          pay_date      => null,
+                                          pay_type      => null,
+                                          pay_val       => null,
+                                          pay_array     => null);
                   else
                       -- периоды
                       for kk in (
@@ -277,28 +267,26 @@ as
                                                       ) t
                                 )
                       loop
-                          p_isin_secur_row.cpcode := k.cpcode;
-                          p_isin_secur_row.nominal := k.nominal;
-                          p_isin_secur_row.auk_proc := k.auk_proc;
-                          p_isin_secur_row.pgs_date := k.pgs_date;
-                          p_isin_secur_row.razm_date := k.razm_date;
-                          p_isin_secur_row.cptype := k.cptype;
-                          p_isin_secur_row.cpdescr := k.cpdescr;
-                          p_isin_secur_row.pay_period := k.pay_period;
-                          p_isin_secur_row.val_code := k.val_code;
-                          p_isin_secur_row.emit_okpo := k.emit_okpo;
-                          p_isin_secur_row.emit_name := k.emit_name;
-                          p_isin_secur_row.cptype_nkcpfr := k.cptype_nkcpfr;
-                          p_isin_secur_row.cpcode_cfi := k.cpcode_cfi;
-                          p_isin_secur_row.total_bonds := k.total_bonds;
-                          p_isin_secur_row.pay_date := kk.pay_date;
-                          p_isin_secur_row.pay_type := kk.pay_type;
-                          p_isin_secur_row.pay_val := kk.pay_val;
-                          p_isin_secur_row.pay_array := kk.pay_array;
-                          --
                           p_isin_secur_table.extend;
-                          p_isin_secur_table(p_num) := p_isin_secur_row;
-                          p_num := p_num + 1;
+                          p_isin_secur_table(p_isin_secur_table.count) :=
+                             t_isin_secur_row(cpcode        => k.cpcode,
+                                              nominal       => k.nominal,
+                                              auk_proc      => k.auk_proc,
+                                              pgs_date      => k.pgs_date,
+                                              razm_date     => k.razm_date,
+                                              cptype        => k.cptype,
+                                              cpdescr       => k.cpdescr,
+                                              pay_period    => k.pay_period,
+                                              val_code      => k.val_code,
+                                              emit_okpo     => k.emit_okpo,
+                                              emit_name     => k.emit_name,
+                                              cptype_nkcpfr => k.cptype_nkcpfr,
+                                              cpcode_cfi    => k.cpcode_cfi,
+                                              total_bonds   => k.total_bonds,
+                                              pay_date      => kk.pay_date,
+                                              pay_type      => kk.pay_type,
+                                              pay_val       => kk.pay_val,
+                                              pay_array     => kk.pay_array);
                       end loop;
                    end if;
                end loop;
@@ -344,28 +332,26 @@ as
                loop
                   if k.payments is null
                   then
-                      p_isin_secur_row.cpcode := k.cpcode;
-                      p_isin_secur_row.nominal := k.nominal;
-                      p_isin_secur_row.auk_proc := k.auk_proc;
-                      p_isin_secur_row.pgs_date := k.pgs_date;
-                      p_isin_secur_row.razm_date := k.razm_date;
-                      p_isin_secur_row.cptype := k.cptype;
-                      p_isin_secur_row.cpdescr := k.cpdescr;
-                      p_isin_secur_row.pay_period := k.pay_period;
-                      p_isin_secur_row.val_code := k.val_code;
-                      p_isin_secur_row.emit_okpo := k.emit_okpo;
-                      p_isin_secur_row.emit_name := k.emit_name;
-                      p_isin_secur_row.cptype_nkcpfr := k.cptype_nkcpfr;
-                      p_isin_secur_row.cpcode_cfi := k.cpcode_cfi;
-                      p_isin_secur_row.total_bonds := k.total_bonds;
-                      p_isin_secur_row.pay_date := null;
-                      p_isin_secur_row.pay_type := null;
-                      p_isin_secur_row.pay_val := null;
-                      p_isin_secur_row.pay_array := null;
-                      --
                       p_isin_secur_table.extend;
-                      p_isin_secur_table(p_num) := p_isin_secur_row;
-                      p_num := p_num + 1;
+                      p_isin_secur_table(p_isin_secur_table.count) :=
+                         t_isin_secur_row(cpcode        => k.cpcode,
+                                          nominal       => k.nominal,
+                                          auk_proc      => k.auk_proc,
+                                          pgs_date      => k.pgs_date,
+                                          razm_date     => k.razm_date,
+                                          cptype        => k.cptype,
+                                          cpdescr       => k.cpdescr,
+                                          pay_period    => k.pay_period,
+                                          val_code      => k.val_code,
+                                          emit_okpo     => k.emit_okpo,
+                                          emit_name     => k.emit_name,
+                                          cptype_nkcpfr => k.cptype_nkcpfr,
+                                          cpcode_cfi    => k.cpcode_cfi,
+                                          total_bonds   => k.total_bonds,
+                                          pay_date      => null,
+                                          pay_type      => null,
+                                          pay_val       => null,
+                                          pay_array     => null);
                   else
                       -- периоды
                       for kk in (
@@ -382,28 +368,26 @@ as
                                                       ) t
                                 )
                       loop
-                          p_isin_secur_row.cpcode := k.cpcode;
-                          p_isin_secur_row.nominal := k.nominal;
-                          p_isin_secur_row.auk_proc := k.auk_proc;
-                          p_isin_secur_row.pgs_date := k.pgs_date;
-                          p_isin_secur_row.razm_date := k.razm_date;
-                          p_isin_secur_row.cptype := k.cptype;
-                          p_isin_secur_row.cpdescr := k.cpdescr;
-                          p_isin_secur_row.pay_period := k.pay_period;
-                          p_isin_secur_row.val_code := k.val_code;
-                          p_isin_secur_row.emit_okpo := k.emit_okpo;
-                          p_isin_secur_row.emit_name := k.emit_name;
-                          p_isin_secur_row.cptype_nkcpfr := k.cptype_nkcpfr;
-                          p_isin_secur_row.cpcode_cfi := k.cpcode_cfi;
-                          p_isin_secur_row.total_bonds := k.total_bonds;
-                          p_isin_secur_row.pay_date := kk.pay_date;
-                          p_isin_secur_row.pay_type := kk.pay_type;
-                          p_isin_secur_row.pay_val := kk.pay_val;
-                          p_isin_secur_row.pay_array := kk.pay_array;
-                          --
                           p_isin_secur_table.extend;
-                          p_isin_secur_table(p_num) := p_isin_secur_row;
-                          p_num := p_num + 1;
+                          p_isin_secur_table(p_isin_secur_table.count) :=
+                             t_isin_secur_row(cpcode        => k.cpcode,
+                                              nominal       => k.nominal,
+                                              auk_proc      => k.auk_proc,
+                                              pgs_date      => k.pgs_date,
+                                              razm_date     => k.razm_date,
+                                              cptype        => k.cptype,
+                                              cpdescr       => k.cpdescr,
+                                              pay_period    => k.pay_period,
+                                              val_code      => k.val_code,
+                                              emit_okpo     => k.emit_okpo,
+                                              emit_name     => k.emit_name,
+                                              cptype_nkcpfr => k.cptype_nkcpfr,
+                                              cpcode_cfi    => k.cpcode_cfi,
+                                              total_bonds   => k.total_bonds,
+                                              pay_date      => kk.pay_date,
+                                              pay_type      => kk.pay_type,
+                                              pay_val       => kk.pay_val,
+                                              pay_array     => kk.pay_array);
                       end loop;
                    end if;
                end loop;
@@ -428,9 +412,6 @@ as
       p_response_status_code integer;
       p_response_status_desc varchar2(7000);
       p_dop_param            varchar2(5);
-      p_num                  integer := 1;
-      ---------------------------------------
-      p_kurs_nbu_row         t_kurs_nbu_row   := t_kurs_nbu_row(null,null,null,null,null);
       p_kurs_nbu_table       t_kurs_nbu_table := t_kurs_nbu_table();
     begin
       if p_format = 'json' then p_dop_param := '&json'; end if;
@@ -470,9 +451,9 @@ as
           then
               if p_check.is_valid_json_schema(p_text => p_response_body, p_type => 'kurs_nbu') = false
               then
-                 raise_application_error(-20000, 'Нарушена структура схемы JSON', true);                         
-              end if;    
-            
+                 raise_application_error(-20000, 'Нарушена структура схемы JSON', true);
+              end if;
+
               for k in (
                         select lpad(j.r030,3,'0') as r030,
                                j.txt,
@@ -494,15 +475,13 @@ as
                                j.exchangedate is not null
                          )
                loop
-                  p_kurs_nbu_row.r030 := k.r030;
-                  p_kurs_nbu_row.txt := k.txt;
-                  p_kurs_nbu_row.rate := k.rate;
-                  p_kurs_nbu_row.cc := k.cc;
-                  p_kurs_nbu_row.exchangedate := k.exchangedate;
-                  --
                   p_kurs_nbu_table.extend;
-                  p_kurs_nbu_table(p_num) := p_kurs_nbu_row;
-                  p_num := p_num + 1;
+                  p_kurs_nbu_table(p_kurs_nbu_table.count) :=
+                     t_kurs_nbu_row(r030         => k.r030,
+                                    txt          => k.txt,
+                                    rate         => k.rate,
+                                    cc           => k.cc,
+                                    exchangedate => k.exchangedate);
                end loop;
            end if;
        else
@@ -529,15 +508,13 @@ as
                                j.exchangedate is not null
                          )
                loop
-                  p_kurs_nbu_row.r030 := k.r030;
-                  p_kurs_nbu_row.txt := k.txt;
-                  p_kurs_nbu_row.rate := k.rate;
-                  p_kurs_nbu_row.cc := k.cc;
-                  p_kurs_nbu_row.exchangedate := k.exchangedate;
-                  --
                   p_kurs_nbu_table.extend;
-                  p_kurs_nbu_table(p_num) := p_kurs_nbu_row;
-                  p_num := p_num + 1;
+                  p_kurs_nbu_table(p_kurs_nbu_table.count) :=
+                     t_kurs_nbu_row(r030         => k.r030,
+                                    txt          => k.txt,
+                                    rate         => k.rate,
+                                    cc           => k.cc,
+                                    exchangedate => k.exchangedate);
                end loop;
            end if;
        end if;
